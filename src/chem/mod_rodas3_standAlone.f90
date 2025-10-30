@@ -66,6 +66,7 @@ module mod_rodas3_standAlone
         real, pointer, dimension(:    ) :: sc_t,sc_t_dyn
     end type chem
     type(chem), allocatable :: chem1_g(:)
+    character(len=8), allocatable :: spc_name(:)
     
     type, public :: spack_type
         !3d real
@@ -189,6 +190,7 @@ contains
             allocate(chem1_g(ispc)%sc_t(sc_t_size(ispc)))
             allocate(chem1_g(ispc)%sc_t_dyn(sc_t_DynSiz(ispc)))
         end do
+        allocate(spc_name(nspecies))
         allocate(spack(1)%dldrdc  (1:maxblock_size,nspecies,nspecies))
         allocate(spack(1)%jphoto  (1:maxblock_size,nr_photo))
         allocate(spack(1)%rk      (1:maxblock_size,nr))		 
@@ -253,7 +255,7 @@ contains
              read(iunit)  chem1_g(ispc)%sc_t
              read(iunit)  chem1_g(ispc)%sc_t_dyn
         end do
-        
+        read(iunit)  spc_name
         read(iunit)  spack(1)%DLdrdc
         read(iunit)  spack(1)%sc_p_new
         read(iunit)  spack(1)%DLr	 	 
@@ -939,14 +941,15 @@ contains
         write(iunit) glat
         write(iunit) glon
         do ispc=1,nspecies
-        write(iunit)  chem1_g(ispc)%sc_p
-        !write(iunit,*)  chem1_g(ispc)%sc_pp
-        !write(iunit,*)  chem1_g(ispc)%sc_pf
-        !write(iunit,*)  chem1_g(ispc)%sc_dd
-        !write(iunit,*)  chem1_g(ispc)%sc_wd
-        write(iunit)  chem1_g(ispc)%sc_t
-        write(iunit)  chem1_g(ispc)%sc_t_dyn
+            write(iunit)  chem1_g(ispc)%sc_p
+            !write(iunit,*)  chem1_g(ispc)%sc_pp
+            !write(iunit,*)  chem1_g(ispc)%sc_pf
+            !write(iunit,*)  chem1_g(ispc)%sc_dd
+            !write(iunit,*)  chem1_g(ispc)%sc_wd
+            write(iunit)  chem1_g(ispc)%sc_t
+            write(iunit)  chem1_g(ispc)%sc_t_dyn
         end do
+        write(iunit)  spc_name
         !write(iunit)  spack(1)%DLdrdc
         !write(iunit)  spack(1)%sc_p_new
         !!write(iunit,*)  spack(1)%sc_p_4
